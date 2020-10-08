@@ -1,0 +1,539 @@
+---
+title: "R Notebook"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+# STAT3613 Assignment 1
+## Wu Zijing
+## UID = 3035556644
+
+
+#### Question 1a)
+**There seems to have been two product launches initiatives during this period. There is a S-shape curve on the cumulative model until mid-2008. It seems another diffusion cycle occurs because there is another S-shape curve afterwards. It seems that 4 new recruits joined and their aggressive cohort in late 2008 could be responsible for the second S-shape.**
+
+
+*Code:*
+```{r}
+#Question 1a)
+load(file ="/Users/zijingohmeywu/Desktop/STAT3613 Marketing Analytics/STAT3613 AS1/adopt.RData")
+par(mar = c(5, 4, 4, 4) + 0.3) # Additional space for second y-axis
+plot(adopt$date, adopt$nt, main = 'Question 1a', xlab = 'Time (Days)', ylab = 'Current adoption in a month', col = 'blue', pch = 'o', lty = 1) # Create first plot
+lines(adopt$date, adopt$nt, xlab = 'Time (Year)', ylab = 'Current adoption in a month', col = 'blue', lty = 1) # Add lines
+par(new = TRUE) # Add new plot
+plot(adopt$date, adopt$cnt,col = 'red', pch = 'x', lty = 1, axes = FALSE, xlab = '', ylab = '') # Create second plot without axes
+lines(adopt$date, adopt$cnt, xlab = 'Time (Year)', ylab = 'Cumulative adoption in a month', col = 'red', lty = 1) #Add lines
+axis(side = 4, at = pretty(range(adopt$cnt))) #Label right-hand axis
+mtext("Cumulative adoption in a month", side = 4, line = 3) #Add right-hand axis label
+legend("topleft", legend = c('Cumulative', "Current"), col = c('red', 'blue'), pch = c('x', 'o')) #Add legend
+```
+
+#### Question 1b)
+**The multiple R-squared value (0.698) suggests that 69.8% of the variation in the data can be explained by the model. It is not a particularly good fit but a mild one. The similarity in the multiple R-squared value vs adjusted R-squared value (0.6765) suggests that the model does not face overfitting.**
+
+
+*Code:*
+```{r}
+#Question 1b)
+adopt1 <- data.frame(matrix(0, nrow = 31)) 
+adopt1 <- colnames(c("cnt", "nt")) #Specify rows, add column titles to set col length
+
+adopt1$cnt <- adopt$cnt[c(0:31)]
+adopt1$nt <- adopt$nt[c(0:31)]
+
+#Quadratic model parameterization
+quadratic_model <- lm(adopt1$nt ~ poly(adopt1$cnt, 2, raw = TRUE))
+summary(quadratic_model)
+```
+
+#### Question 1c)
+
+**Innovation coefficent: 0.0026427**
+
+**Imitation coefficient: 0.2778458**
+
+**Market potential: 593 (exactly 593.197)**
+
+*Code:*
+```{r}
+#Question 1c) xxx
+
+#Final quadratic model
+x1 = as.numeric(quadratic_model$coefficients[1]) #Must pull integer not the line including row names
+x2 = as.numeric(quadratic_model$coefficients[2])
+x3 = as.numeric(quadratic_model$coefficients[3])
+cnt_head <- x1+x2*adopt$nt+x3*adopt$nt^2
+```
+#### Question 1d)
+
+**a = 0.01.708**
+
+**b = 0.4701**
+
+**N = 0.001037**
+
+**R-Squared: 0.8468**
+**It suggests a strong relationship between the predicted model and the dataset. It suggests 84.68% of the variation in the dataset is explained by this model.** 
+
+**Note: In practice, we should not rely on this result too much because using R-Squared to evaluate non-linear models is an invalid goodness-of-fit.**
+
+
+*Code:*
+```{r}
+#Question 1d)
+time_elapsed_since_2009_01_01 <- as.Date(adopt$date)-as.Date("2009-01-01")
+adopt2 <- subset(adopt, time_elapsed_since_2009_01_01 >= 0, select = c("date", "nt", "cnt")) #pull subset
+  
+adopt2$cnt <- adopt2$cnt-adopt2$cnt[1] #Reset cumulative adoption rate from 2009-01-01
+
+new_market_potential <- 2774-555 #541 is the cnt at the beginning of 2009-01-01. 2774 is our original market potential from 2006-06-01.
+sub_quadratic_model <- nls(nt~a*N+(b-a)*cnt+(-b/N)*cnt^2, adopt2, start = c(a = 0.0011585, b = 0.11723, N = new_market_potential))
+summary(sub_quadratic_model)
+
+#R-Squared
+sse = sum((fitted(sub_quadratic_model) - mean(adopt2$nt))^2)
+ssr = sum((fitted(sub_quadratic_model) - adopt2$nt)^2)
+
+r_squared = 1 - (ssr/(sse + ssr))
+```
+#### Question 1e)
+
+**The cnt, nt vs time plot reveals two S-shaped curve suggesting two diffusion cycles. The data is highly indicative of the fact that 4 recruits joined in late 2008 and their aggressive cohort is responsible for a second diffusion cycle.** 
+
+**The high R-Squared value from the model fitting a post-2008 subset (0.846804) support the idea of two diffusion cycles (pre-2008 and post-2008). This indicates that the 4 recruits and their cohort  may have had an influence on the results. However, given the innappropiateness of using R-Squared to evaluate a non-linear model, this statistic requires additional supporting evidence from the following.)**
+
+**When you compare the innovation coefficient over the entire period (0.0011585) vs post-2008 (0.01708), it is clear that the innovation coefficient is much higher in post-2008. This means there are more people trying out the new product after the 4 recruits appeared. This suggests the adoption relies highly on interpersonal influence.**
+
+**The imitation coefficient is also greater in post-2008 (0.4701) compared to the pre-2008 period (0.2778458). This means the more people began trying the product based on exposure to past buyers in the post-2008 period. It shows that interpersonal influence varies across time.**
+
+
+**The following statistics seem to support the conclusion.**
+
+
+#### Question 2a)
+**See below**
+
+```{r}
+#Question 2a)
+room <- read.csv("room.csv", header = TRUE)
+room$occupy <- room$Number_hotel_rooms * room$rate
+```
+
+#### Question 2b)i)
+
+**Linear exponential smoothing model - **
+        
+        alpha = 0.4051,
+        
+        beta  = 0.0433,
+        
+        l = 6172404,  
+        
+        b = 73481
+
+**Holt-Winters' additive method -**
+        
+        alpha = 0.2868
+        
+        beta = 0
+        
+        gamma = 0.859,
+        
+        l = 6320180.0833 ,
+        
+        b = 18356.8819
+        
+        s = -550520.1, 37799.92, 252113.9, 380695.9, 307059.9, -178346.1,
+           413728.9, -46585.08, -194199.1, -199677.1, -74295.08, -147776.1
+
+**Holt-Winters multiplicative method - **
+        
+        alpha = 0.2625, 
+        
+        beta  = 0, 
+        
+        gamma = 0.8909 , 
+        
+        l = 6320180.0833, 
+        
+        b = 18356.8819, 
+        
+        s = 0.9129, 1.006, 1.0399, 1.0602, 1.0486, 0.9718,
+           1.0655, 0.9926, 0.9693, 0.9684, 0.9882, 0.9766
+*Code:*
+
+```{r}
+#Question 2b)i)
+
+library("forecast")
+#Linear exponential smoothing
+linear_exponential_smoothing <- holt(y = room$occupy, h = 12, initial = "simple", beta = NULL)
+summary(linear_exponential_smoothing)
+r2_i <- 1-linear_exponential_smoothing$model$SSE/sum((linear_exponential_smoothing$x-mean(linear_exponential_smoothing$x))^2)
+
+#i) cont.
+
+
+#Additive seasonal model
+  #ts() create a times series
+  #freq = no. of observations in a season/period
+  #start = starting year and month
+
+  #Create time series object
+ts.room <- ts(data = room[1:46, "occupy"], frequency= 12, start = c(2015,03))
+
+additive_seasonal_model <- hw(y = ts.room, seasonal = "add", h = 12, initial = "simple")
+summary(additive_seasonal_model)
+
+r2_ii <- 1-additive_seasonal_model$model$SSE/sum((additive_seasonal_model$x-mean(additive_seasonal_model$x))^2)
+
+#i) cont.
+
+#Multiplicative seasonal model
+multiplicative_seasonal_model<-hw(ts.room,seasonal="mul",h=12,initial="simple")
+summary(multiplicative_seasonal_model)
+
+r2_iii <- 1-multiplicative_seasonal_model$model$SSE/sum((multiplicative_seasonal_model$x-mean(multiplicative_seasonal_model$x))^2)
+```
+
+
+#### Question 2b) ii)
+
+**Holt Linear Exponential Smoothing R-squared: 0.6907**
+
+**Additive seasonal model R-squared: 0.9111**
+
+**Multiplicative seasonal model R-squared: 0.9046**
+
+
+**The Holt Linear Exponential Smoothing model suggests a mild relationship between the predicted model and the dataset. It suggests 69.07% of the variation in the dataset is explained by this model. **
+
+**The additive seasonal model suggests a strong relationship between the predicted model and the dataset. It suggests 91.11% of the variation in the dataset is explained by this model. **
+
+**The multiplicative seasonal model also suggests a strong relationship between the predicted model and the dataset. It suggests 90.46% of the variation in the dataset is explained by this model.**
+
+**It seems the first model is a poorer fit in comparison to the second and third model.**
+
+--------------------------------------------
+
+#### Question 2c) i)
+
+**Forecasted values: **
+
+**2019: **
+
+**Jan, 7560398 **
+
+**Feb, 7336349 **
+
+**March, 7539390 **
+
+**April, 7435570 **
+
+**May, 7087026 **
+
+**June, 7286464 **
+
+**July, 7375308 **
+
+**Aug, 7633472 **
+
+**Sep, 7068613 **
+
+**Oct, 7664210 **
+
+**Nov, 7948654 **
+
+**Dec, 7903885**
+
+*Code:*
+```{r}
+#Question 2c) i)
+forecast(multiplicative_seasonal_model)$mean
+```
+
+#### Question 2c) ii)
+**In general, the occupancy is rising in an upwards trend. In both 2018 and 2019, there seems to be a seasonal increase in the winter of beginning of the year, followed by a decrease during the spring, followed by an increase during the summer, followed by a decrease in the autumn. When winter approaches, the seasonal cycle repeats in a similar way. In both years, the biggest change in occupancy occurs in the beginning of the winter season.**
+
+```{r}
+#Question 2c)ii)
+plot(multiplicative_seasonal_model, xlab = "Year", ylab = "Occupancy")
+```
+
+#### Question 2d) i)
+
+**alpha = 0.2868**
+
+**beta = 0**
+
+**gamma = 0.859**
+
+**In terms of smoothing, beta is 0, which means the trend effects have no weight. On the other hand, gamma is close to 1. This is means the seasonal effects have more weight**
+
+--------------------------
+
+#### Question 2d) ii)
+
+**December 2018 Level, Trend, Seasonality States:**
+
+**level = 7327993.27**
+
+**trend = 18356.88**
+
+**seasonal = **
+
+**Jan: 347873.98,  **
+
+**Feb: 421874.92,  **
+
+**March: 168375.15, **
+
+**April: -397059.47,  **
+
+**May: 168217.86, **
+
+**June: -64439.12, **
+
+**July: -141820.99, **
+
+**Aug: -328033.54,  **
+
+**Sep: 26354.17,  **
+
+**Oct: 139185.16,  **
+
+**Nov: -40158.90,  **
+
+**Dec: 188965.11**
+
+
+**There is a general upwards growth as seen by the trend state. The monthly variations begin with occupancy increasing in the winter months (Jan, Feb), followed by a decline throughout the spring (March, April), followed by a brief increase in May, followed by continual decline in the summer (June, Juuly, Aug), followed by an increase during the autumn (Sep, Oct), a sudden decline in Nov and final increase in Dec.**
+
+*Code:*
+```{r}
+additive_seasonal_model$model$states[47,]
+```
+
+#### Question 3a)
+
+**See reported data below under n_salespeople and n_volume**
+
+```{r}
+#Question 3a)
+salesA <- data.frame("salespeople" = c(1, 2, 3, 4, 6, 8), "volume" = c(400, 480, 500, 600, 750, 800))
+salesB <- data.frame("salespeople" = c(0, 2, 3, 4, 6, 10, 11), "volume" = c(50, 200, 450, 550, 750, 850, 900))
+
+#City A normalization
+salesA$n_salespeople <- salesA$salespeople/3 #Data is normalized with 3 as reference level
+salesA$n_volume <- salesA$volume/500 #Data is normalized with 500 as reference level
+
+#City B normalization
+salesB$n_salespeople <- salesB$salespeople/4 #Data is normalized with 4 as reference level
+salesB$n_volume <- salesB$volume/550 #Data is normalized with 550 as reference level
+
+salesA
+salesB
+```
+
+#### Question 3b)
+
+```{r}
+#Question 3b)
+library('ggplot2')
+
+ggplot(salesA, aes(n_salespeople, n_volume))+geom_point()+ggtitle("CityA", "Normalized Ref: (3, 500)")+xlab("Salespeople")+ylab("Volume")
+ggplot(salesB, aes(n_salespeople, n_volume))+geom_point()+ggtitle("CityB", "Normalized Ref: (4, 550)")+xlab("Salespeople")+ylab("Volume")
+```
+
+#### Question 3c)
+
+**City A: a = 0.903426**
+
+**City A: b = -3.044814**
+
+**City A: c = 2.302461**
+
+**City A: d = 0.742147**
+
+
+
+**City B: a = 1.718743**
+
+**City B: b = -2.057240**
+
+**City B: c = 2.725133**
+
+**City B: d = -0.124765**
+
+
+**R-Squared for City A: 0.990220**
+
+**R-Squared for City B: 0.990367**
+
+**There is a strong association between the models and the data based on the R-squared value in both City A and City B. City A's model describes 99.02% of the variation in the data. City B's model describes 99.03% of the variation in the data**
+```{r}
+#Question 3c)
+
+#CITY A
+A_A <- (max(salesA$n_volume) - min(salesA$n_volume))
+#Select the nearest x-value to the point of inflection
+inflection <- 1.33333
+A_C <- 4*(inflection)/A_A
+A_B <- -(inflection)*A_C
+A_D <- min(salesA$n_volume)
+
+logitA <- nls(n_volume ~ (a/(1+exp(-b-c*n_salespeople)) + d), data=salesA, start=c(a=A_A, b=A_B, c=A_C, d=A_D))
+
+#CITY B
+B_A <- (max(salesB$n_volume) - min(salesB$n_volume))
+#Select the nearest x-value to the point of inflection
+inflection <- 0.75
+B_C <- 4*(inflection)/B_A
+B_B <- -(inflection)*B_C
+B_D <- min(salesB$n_volume)
+
+logitB <- nls(n_volume ~ (a/(1+exp(-b-c*n_salespeople)) + d), data=salesB, start=c(a=A_A, b=A_B, c=A_C, d=A_D))
+
+#City A R-squared
+sseA = sum((fitted(logitA) - mean(salesA$n_volume))^2)
+ssrA = sum((fitted(logitA) - salesA$n_volume)^2)
+
+r_squaredA = 1 - (ssrA/(sseA + ssrA))
+
+
+#City B R-squared
+sseB = sum((fitted(logitB) - mean(salesB$n_volume))^2)
+ssrB = sum((fitted(logitB) - salesB$n_volume)^2)
+
+r_squaredB = 1 - (ssrB/(sseB + ssrB))
+
+```
+
+#### Question 3d)
+```{r}
+#Question 3d)
+n_volume_head_A <- predict(logitA)
+plot1 <- ggplot(salesA, aes(n_salespeople, n_volume_head_A))+
+  geom_point()+
+  ggtitle("CityA", "Normalized Ref: (3, 500)")+
+  xlab("Salespeople")+
+  ylab("Volume")
+
+n_volume_head_B <- predict(logitB)
+plot2 <- ggplot(salesB, aes(n_salespeople, n_volume_head_B))+
+  geom_point()+
+  ggtitle("CityB", "Normalized Ref: (4, 550)")+
+  xlab("Salespeople")+
+  ylab("Volume")
+
+plot1
+plot2
+```
+
+#### Question 3e)
+
+**Sales Volume of City A with 7 salespeople: 799.491596**
+
+**Sales Volume of City B with 5 salespeople: 666.451221**
+```{r}
+#Question 3e)
+
+#City A with 7 salespeople
+(A_A/(1+exp(-A_B-A_C*7/3)) + A_D)*500
+
+#City B with 5 salespeople
+(B_A/(1+exp(-B_B-B_C*5/4)) + B_D)*550
+```
+
+#### Question 3f)
+
+**Optimal allocation is 6 salespeople in City A and 11 salespeople in City B**
+
+
+**City A Maximum Total Net Profit: 15000**
+
+**City A Optimal Total Sales Volume: 750**
+
+**City A Optimal Total Cost: 9000**
+
+**City A Optimal Gross Profit: 24000**
+
+
+**City B Maximum Total Net Profit: 34000**
+
+**City B Optimal Total Sales Volume: 900**
+
+**City B Optimal Total Cost: 11000**
+
+**City B Optimal Gross Profit: 45000**
+
+
+*Code:*
+```{r}
+#Question 3f)
+salesA$net_profit <-32*salesA$volume - salesA$salespeople*1500
+salesA$total_cost <-salesA$salespeople*1500
+salesA$gross_profit <-32*salesA$volume
+
+#City A Maximum Total Net Profit:
+max(salesA$net_profit)
+#City A Optimal Total Sales Volume:
+750
+#City A Optimal Total Cost:
+6*1500
+#City A Optimal Gross Profit:
+32*750
+
+
+salesB$net_profit <-50*salesB$volume - salesB$salespeople*1000
+salesB$total_cost <- salesB$salespeople*1000
+salesB$gross_profit <-50*salesB$volume
+#City B Maximum Total Net Profit:
+max(salesB$net_profit)
+#City B Optimal Total Sales Volume:
+900
+#City B Optimal Total Cost:
+11*1000
+#City B Optimal Gross Profit:
+50*900
+```
+#### Question 3g)
+
+**Optimal allocation is 6 salespeople in City A and 6 salespeople in City B**
+
+**Maximum Total Net Profit: 46500**
+
+**Optimal Total Sales Volume: 1500**
+
+**Optimal Total Cost: 15000**
+
+**Optimal Gross Profit: 61500**
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

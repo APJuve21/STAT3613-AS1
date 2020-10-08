@@ -1,0 +1,1066 @@
+\PassOptionsToPackage{unicode=true}{hyperref} % options for packages loaded elsewhere
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provides euro and other symbols
+\else % if luatex or xelatex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage[]{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\usepackage{hyperref}
+\hypersetup{
+            pdftitle={R Notebook},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+% set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+
+
+\title{R Notebook}
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+\maketitle
+
+\hypertarget{stat3613-assignment-1}{%
+\section{STAT3613 Assignment 1}\label{stat3613-assignment-1}}
+
+\hypertarget{wu-zijing}{%
+\subsection{Wu Zijing}\label{wu-zijing}}
+
+\hypertarget{uid-3035556644}{%
+\subsection{UID = 3035556644}\label{uid-3035556644}}
+
+\hypertarget{question-1a}{%
+\paragraph{Question 1a)}\label{question-1a}}
+
+\textbf{There seems to have been two product launches initiatives during
+this period. There is a S-shape curve on the cumulative model until
+mid-2008. It seems another diffusion cycle occurs because there is
+another S-shape curve afterwards. It seems that 4 new recruits joined
+and their aggressive cohort in late 2008 could be responsible for the
+second S-shape.}
+
+\emph{Code:}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Question 1a)}
+\KeywordTok{load}\NormalTok{(}\DataTypeTok{file =}\StringTok{"/Users/zijingohmeywu/Desktop/STAT3613 Marketing Analytics/STAT3613 AS1/adopt.RData"}\NormalTok{)}
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mar =} \KeywordTok{c}\NormalTok{(}\DecValTok{5}\NormalTok{, }\DecValTok{4}\NormalTok{, }\DecValTok{4}\NormalTok{, }\DecValTok{4}\NormalTok{) }\OperatorTok{+}\StringTok{ }\FloatTok{0.3}\NormalTok{) }\CommentTok{# Additional space for second y-axis}
+\KeywordTok{plot}\NormalTok{(adopt}\OperatorTok{$}\NormalTok{date, adopt}\OperatorTok{$}\NormalTok{nt, }\DataTypeTok{main =} \StringTok{'Question 1a'}\NormalTok{, }\DataTypeTok{xlab =} \StringTok{'Time (Days)'}\NormalTok{, }\DataTypeTok{ylab =} \StringTok{'Current adoption in a month'}\NormalTok{, }\DataTypeTok{col =} \StringTok{'blue'}\NormalTok{, }\DataTypeTok{pch =} \StringTok{'o'}\NormalTok{, }\DataTypeTok{lty =} \DecValTok{1}\NormalTok{) }\CommentTok{# Create first plot}
+\KeywordTok{lines}\NormalTok{(adopt}\OperatorTok{$}\NormalTok{date, adopt}\OperatorTok{$}\NormalTok{nt, }\DataTypeTok{xlab =} \StringTok{'Time (Year)'}\NormalTok{, }\DataTypeTok{ylab =} \StringTok{'Current adoption in a month'}\NormalTok{, }\DataTypeTok{col =} \StringTok{'blue'}\NormalTok{, }\DataTypeTok{lty =} \DecValTok{1}\NormalTok{) }\CommentTok{# Add lines}
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{new =} \OtherTok{TRUE}\NormalTok{) }\CommentTok{# Add new plot}
+\KeywordTok{plot}\NormalTok{(adopt}\OperatorTok{$}\NormalTok{date, adopt}\OperatorTok{$}\NormalTok{cnt,}\DataTypeTok{col =} \StringTok{'red'}\NormalTok{, }\DataTypeTok{pch =} \StringTok{'x'}\NormalTok{, }\DataTypeTok{lty =} \DecValTok{1}\NormalTok{, }\DataTypeTok{axes =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{xlab =} \StringTok{''}\NormalTok{, }\DataTypeTok{ylab =} \StringTok{''}\NormalTok{) }\CommentTok{# Create second plot without axes}
+\KeywordTok{lines}\NormalTok{(adopt}\OperatorTok{$}\NormalTok{date, adopt}\OperatorTok{$}\NormalTok{cnt, }\DataTypeTok{xlab =} \StringTok{'Time (Year)'}\NormalTok{, }\DataTypeTok{ylab =} \StringTok{'Cumulative adoption in a month'}\NormalTok{, }\DataTypeTok{col =} \StringTok{'red'}\NormalTok{, }\DataTypeTok{lty =} \DecValTok{1}\NormalTok{) }\CommentTok{#Add lines}
+\KeywordTok{axis}\NormalTok{(}\DataTypeTok{side =} \DecValTok{4}\NormalTok{, }\DataTypeTok{at =} \KeywordTok{pretty}\NormalTok{(}\KeywordTok{range}\NormalTok{(adopt}\OperatorTok{$}\NormalTok{cnt))) }\CommentTok{#Label right-hand axis}
+\KeywordTok{mtext}\NormalTok{(}\StringTok{"Cumulative adoption in a month"}\NormalTok{, }\DataTypeTok{side =} \DecValTok{4}\NormalTok{, }\DataTypeTok{line =} \DecValTok{3}\NormalTok{) }\CommentTok{#Add right-hand axis label}
+\KeywordTok{legend}\NormalTok{(}\StringTok{"topleft"}\NormalTok{, }\DataTypeTok{legend =} \KeywordTok{c}\NormalTok{(}\StringTok{'Cumulative'}\NormalTok{, }\StringTok{"Current"}\NormalTok{), }\DataTypeTok{col =} \KeywordTok{c}\NormalTok{(}\StringTok{'red'}\NormalTok{, }\StringTok{'blue'}\NormalTok{), }\DataTypeTok{pch =} \KeywordTok{c}\NormalTok{(}\StringTok{'x'}\NormalTok{, }\StringTok{'o'}\NormalTok{)) }\CommentTok{#Add legend}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT3613-AS1_files/figure-latex/unnamed-chunk-1-1.pdf}
+
+\hypertarget{question-1b}{%
+\paragraph{Question 1b)}\label{question-1b}}
+
+\textbf{The multiple R-squared value (0.698) suggests that 69.8\% of the
+variation in the data can be explained by the model. It is not a
+particularly good fit but a mild one. The similarity in the multiple
+R-squared value vs adjusted R-squared value (0.6765) suggests that the
+model does not face overfitting.}
+
+\emph{Code:}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Question 1b)}
+\NormalTok{adopt1 <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\KeywordTok{matrix}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DataTypeTok{nrow =} \DecValTok{31}\NormalTok{)) }
+\NormalTok{adopt1 <-}\StringTok{ }\KeywordTok{colnames}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{"cnt"}\NormalTok{, }\StringTok{"nt"}\NormalTok{)) }\CommentTok{#Specify rows, add column titles to set col length}
+
+\NormalTok{adopt1}\OperatorTok{$}\NormalTok{cnt <-}\StringTok{ }\NormalTok{adopt}\OperatorTok{$}\NormalTok{cnt[}\KeywordTok{c}\NormalTok{(}\DecValTok{0}\OperatorTok{:}\DecValTok{31}\NormalTok{)]}
+\NormalTok{adopt1}\OperatorTok{$}\NormalTok{nt <-}\StringTok{ }\NormalTok{adopt}\OperatorTok{$}\NormalTok{nt[}\KeywordTok{c}\NormalTok{(}\DecValTok{0}\OperatorTok{:}\DecValTok{31}\NormalTok{)]}
+
+\CommentTok{#Quadratic model parameterization}
+\NormalTok{quadratic_model <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(adopt1}\OperatorTok{$}\NormalTok{nt }\OperatorTok{~}\StringTok{ }\KeywordTok{poly}\NormalTok{(adopt1}\OperatorTok{$}\NormalTok{cnt, }\DecValTok{2}\NormalTok{, }\DataTypeTok{raw =} \OtherTok{TRUE}\NormalTok{))}
+\KeywordTok{summary}\NormalTok{(quadratic_model)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = adopt1$nt ~ poly(adopt1$cnt, 2, raw = TRUE))
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -20.549  -2.389  -0.568   2.041  33.084 
+## 
+## Coefficients:
+##                                    Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)                       1.568e+00  2.716e+00   0.577    0.568    
+## poly(adopt1$cnt, 2, raw = TRUE)1  2.752e-01  4.013e-02   6.857 1.89e-07 ***
+## poly(adopt1$cnt, 2, raw = TRUE)2 -4.684e-04  8.374e-05  -5.593 5.49e-06 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 10.01 on 28 degrees of freedom
+## Multiple R-squared:  0.698,  Adjusted R-squared:  0.6765 
+## F-statistic: 32.36 on 2 and 28 DF,  p-value: 5.241e-08
+\end{verbatim}
+
+\hypertarget{question-1c}{%
+\paragraph{Question 1c)}\label{question-1c}}
+
+\textbf{Innovation coefficent: 0.0026427}
+
+\textbf{Imitation coefficient: 0.2778458}
+
+\textbf{Market potential: 593 (exactly 593.197)}
+
+\emph{Code:}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Question 1c) xxx}
+
+\CommentTok{#Final quadratic model}
+\NormalTok{x1 =}\StringTok{ }\KeywordTok{as.numeric}\NormalTok{(quadratic_model}\OperatorTok{$}\NormalTok{coefficients[}\DecValTok{1}\NormalTok{]) }\CommentTok{#Must pull integer not the line including row names}
+\NormalTok{x2 =}\StringTok{ }\KeywordTok{as.numeric}\NormalTok{(quadratic_model}\OperatorTok{$}\NormalTok{coefficients[}\DecValTok{2}\NormalTok{])}
+\NormalTok{x3 =}\StringTok{ }\KeywordTok{as.numeric}\NormalTok{(quadratic_model}\OperatorTok{$}\NormalTok{coefficients[}\DecValTok{3}\NormalTok{])}
+\NormalTok{cnt_head <-}\StringTok{ }\NormalTok{x1}\OperatorTok{+}\NormalTok{x2}\OperatorTok{*}\NormalTok{adopt}\OperatorTok{$}\NormalTok{nt}\OperatorTok{+}\NormalTok{x3}\OperatorTok{*}\NormalTok{adopt}\OperatorTok{$}\NormalTok{nt}\OperatorTok{^}\DecValTok{2}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{question-1d}{%
+\paragraph{Question 1d)}\label{question-1d}}
+
+\textbf{a = 0.01.708}
+
+\textbf{b = 0.4701}
+
+\textbf{N = 0.001037}
+
+\textbf{R-Squared: 0.8468} \textbf{It suggests a strong relationship
+between the predicted model and the dataset. It suggests 84.68\% of the
+variation in the dataset is explained by this model.}
+
+\textbf{Note: In practice, we should not rely on this result too much
+because using R-Squared to evaluate non-linear models is an invalid
+goodness-of-fit.}
+
+\emph{Code:}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Question 1d)}
+\NormalTok{time_elapsed_since_}\DecValTok{2009}\NormalTok{_}\DecValTok{01}\NormalTok{_}\DecValTok{01}\NormalTok{ <-}\StringTok{ }\KeywordTok{as.Date}\NormalTok{(adopt}\OperatorTok{$}\NormalTok{date)}\OperatorTok{-}\KeywordTok{as.Date}\NormalTok{(}\StringTok{"2009-01-01"}\NormalTok{)}
+\NormalTok{adopt2 <-}\StringTok{ }\KeywordTok{subset}\NormalTok{(adopt, time_elapsed_since_}\DecValTok{2009}\NormalTok{_}\DecValTok{01}\NormalTok{_}\DecValTok{01} \OperatorTok{>=}\StringTok{ }\DecValTok{0}\NormalTok{, }\DataTypeTok{select =} \KeywordTok{c}\NormalTok{(}\StringTok{"date"}\NormalTok{, }\StringTok{"nt"}\NormalTok{, }\StringTok{"cnt"}\NormalTok{)) }\CommentTok{#pull subset}
+  
+\NormalTok{adopt2}\OperatorTok{$}\NormalTok{cnt <-}\StringTok{ }\NormalTok{adopt2}\OperatorTok{$}\NormalTok{cnt}\OperatorTok{-}\NormalTok{adopt2}\OperatorTok{$}\NormalTok{cnt[}\DecValTok{1}\NormalTok{] }\CommentTok{#Reset cumulative adoption rate from 2009-01-01}
+
+\NormalTok{new_market_potential <-}\StringTok{ }\DecValTok{2774-555} \CommentTok{#541 is the cnt at the beginning of 2009-01-01. 2774 is our original market potential from 2006-06-01.}
+\NormalTok{sub_quadratic_model <-}\StringTok{ }\KeywordTok{nls}\NormalTok{(nt}\OperatorTok{~}\NormalTok{a}\OperatorTok{*}\NormalTok{N}\OperatorTok{+}\NormalTok{(b}\OperatorTok{-}\NormalTok{a)}\OperatorTok{*}\NormalTok{cnt}\OperatorTok{+}\NormalTok{(}\OperatorTok{-}\NormalTok{b}\OperatorTok{/}\NormalTok{N)}\OperatorTok{*}\NormalTok{cnt}\OperatorTok{^}\DecValTok{2}\NormalTok{, adopt2, }\DataTypeTok{start =} \KeywordTok{c}\NormalTok{(}\DataTypeTok{a =} \FloatTok{0.0011585}\NormalTok{, }\DataTypeTok{b =} \FloatTok{0.11723}\NormalTok{, }\DataTypeTok{N =}\NormalTok{ new_market_potential))}
+\KeywordTok{summary}\NormalTok{(sub_quadratic_model)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Formula: nt ~ a * N + (b - a) * cnt + (-b/N) * cnt^2
+## 
+## Parameters:
+##    Estimate Std. Error t value Pr(>|t|)    
+## a 1.708e-02  8.645e-03   1.975   0.0738 .  
+## b 4.701e-01  5.294e-02   8.880 2.39e-06 ***
+## N 1.037e+03  3.457e+01  30.000 6.67e-12 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 18.08 on 11 degrees of freedom
+## 
+## Number of iterations to convergence: 6 
+## Achieved convergence tolerance: 9.616e-07
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#R-Squared}
+\NormalTok{sse =}\StringTok{ }\KeywordTok{sum}\NormalTok{((}\KeywordTok{fitted}\NormalTok{(sub_quadratic_model) }\OperatorTok{-}\StringTok{ }\KeywordTok{mean}\NormalTok{(adopt2}\OperatorTok{$}\NormalTok{nt))}\OperatorTok{^}\DecValTok{2}\NormalTok{)}
+\NormalTok{ssr =}\StringTok{ }\KeywordTok{sum}\NormalTok{((}\KeywordTok{fitted}\NormalTok{(sub_quadratic_model) }\OperatorTok{-}\StringTok{ }\NormalTok{adopt2}\OperatorTok{$}\NormalTok{nt)}\OperatorTok{^}\DecValTok{2}\NormalTok{)}
+
+\NormalTok{r_squared =}\StringTok{ }\DecValTok{1} \OperatorTok{-}\StringTok{ }\NormalTok{(ssr}\OperatorTok{/}\NormalTok{(sse }\OperatorTok{+}\StringTok{ }\NormalTok{ssr))}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{question-1e}{%
+\paragraph{Question 1e)}\label{question-1e}}
+
+\textbf{The cnt, nt vs time plot reveals two S-shaped curve suggesting
+two diffusion cycles. The data is highly indicative of the fact that 4
+recruits joined in late 2008 and their aggressive cohort is responsible
+for a second diffusion cycle.}
+
+\textbf{The high R-Squared value from the model fitting a post-2008
+subset (0.846804) support the idea of two diffusion cycles (pre-2008 and
+post-2008). This indicates that the 4 recruits and their cohort may have
+had an influence on the results. However, given the innappropiateness of
+using R-Squared to evaluate a non-linear model, this statistic requires
+additional supporting evidence from the following.)}
+
+\textbf{When you compare the innovation coefficient over the entire
+period (0.0011585) vs post-2008 (0.01708), it is clear that the
+innovation coefficient is much higher in post-2008. This means there are
+more people trying out the new product after the 4 recruits appeared.
+This suggests the adoption relies highly on interpersonal influence.}
+
+\textbf{The imitation coefficient is also greater in post-2008 (0.4701)
+compared to the pre-2008 period (0.2778458). This means the more people
+began trying the product based on exposure to past buyers in the
+post-2008 period. It shows that interpersonal influence varies across
+time.}
+
+\textbf{The following statistics seem to support the conclusion.}
+
+\hypertarget{question-2a}{%
+\paragraph{Question 2a)}\label{question-2a}}
+
+\textbf{See below}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Question 2a)}
+\NormalTok{room <-}\StringTok{ }\KeywordTok{read.csv}\NormalTok{(}\StringTok{"room.csv"}\NormalTok{, }\DataTypeTok{header =} \OtherTok{TRUE}\NormalTok{)}
+\NormalTok{room}\OperatorTok{$}\NormalTok{occupy <-}\StringTok{ }\NormalTok{room}\OperatorTok{$}\NormalTok{Number_hotel_rooms }\OperatorTok{*}\StringTok{ }\NormalTok{room}\OperatorTok{$}\NormalTok{rate}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{question-2bi}{%
+\paragraph{Question 2b)i)}\label{question-2bi}}
+
+\textbf{Linear exponential smoothing model - }
+
+\begin{verbatim}
+    alpha = 0.4051,
+    
+    beta  = 0.0433,
+    
+    l = 6172404,  
+    
+    b = 73481
+\end{verbatim}
+
+\textbf{Holt-Winters' additive method -}
+
+\begin{verbatim}
+    alpha = 0.2868
+    
+    beta = 0
+    
+    gamma = 0.859,
+    
+    l = 6320180.0833 ,
+    
+    b = 18356.8819
+    
+    s = -550520.1, 37799.92, 252113.9, 380695.9, 307059.9, -178346.1,
+       413728.9, -46585.08, -194199.1, -199677.1, -74295.08, -147776.1
+\end{verbatim}
+
+\textbf{Holt-Winters multiplicative method - }
+
+\begin{verbatim}
+    alpha = 0.2625, 
+    
+    beta  = 0, 
+    
+    gamma = 0.8909 , 
+    
+    l = 6320180.0833, 
+    
+    b = 18356.8819, 
+    
+    s = 0.9129, 1.006, 1.0399, 1.0602, 1.0486, 0.9718,
+       1.0655, 0.9926, 0.9693, 0.9684, 0.9882, 0.9766
+\end{verbatim}
+
+\emph{Code:}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Question 2b)i)}
+
+\KeywordTok{library}\NormalTok{(}\StringTok{"forecast"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Registered S3 method overwritten by 'quantmod':
+##   method            from
+##   as.zoo.data.frame zoo
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Linear exponential smoothing}
+\NormalTok{linear_exponential_smoothing <-}\StringTok{ }\KeywordTok{holt}\NormalTok{(}\DataTypeTok{y =}\NormalTok{ room}\OperatorTok{$}\NormalTok{occupy, }\DataTypeTok{h =} \DecValTok{12}\NormalTok{, }\DataTypeTok{initial =} \StringTok{"simple"}\NormalTok{, }\DataTypeTok{beta =} \OtherTok{NULL}\NormalTok{)}
+\KeywordTok{summary}\NormalTok{(linear_exponential_smoothing)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Forecast method: Holt's method
+## 
+## Model Information:
+## Holt's method 
+## 
+## Call:
+##  holt(y = room$occupy, h = 12, initial = "simple", beta = NULL) 
+## 
+##   Smoothing parameters:
+##     alpha = 0.4051 
+##     beta  = 0.0433 
+## 
+##   Initial states:
+##     l = 6172404 
+##     b = 73481 
+## 
+##   sigma:  262179.4
+## Error measures:
+##                    ME     RMSE      MAE        MPE     MAPE      MASE
+## Training set -41038.8 262179.4 206474.4 -0.7599577 3.105491 0.8389776
+##                    ACF1
+## Training set 0.06704861
+## 
+## Forecasts:
+##    Point Forecast   Lo 80   Hi 80   Lo 95   Hi 95
+## 47        7631763 7295767 7967760 7117901 8145625
+## 48        7672131 7303898 8040365 7108967 8235296
+## 49        7712499 7308898 8116100 7095245 8329753
+## 50        7752867 7311041 8194692 7077153 8428581
+## 51        7793235 7310567 8275902 7055058 8531411
+## 52        7833602 7307683 8359522 7029278 8637926
+## 53        7873970 7302566 8445374 7000083 8747857
+## 54        7914338 7295367 8533309 6967703 8860973
+## 55        7954706 7286213 8623199 6932334 8977078
+## 56        7995074 7275214 8714934 6894143 9096005
+## 57        8035441 7262463 8808420 6853273 9217610
+## 58        8075809 7248043 8903575 6809850 9341768
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{r2_i <-}\StringTok{ }\DecValTok{1}\OperatorTok{-}\NormalTok{linear_exponential_smoothing}\OperatorTok{$}\NormalTok{model}\OperatorTok{$}\NormalTok{SSE}\OperatorTok{/}\KeywordTok{sum}\NormalTok{((linear_exponential_smoothing}\OperatorTok{$}\NormalTok{x}\OperatorTok{-}\KeywordTok{mean}\NormalTok{(linear_exponential_smoothing}\OperatorTok{$}\NormalTok{x))}\OperatorTok{^}\DecValTok{2}\NormalTok{)}
+
+\CommentTok{#i) cont.}
+
+
+\CommentTok{#Additive seasonal model}
+  \CommentTok{#ts() create a times series}
+  \CommentTok{#freq = no. of observations in a season/period}
+  \CommentTok{#start = starting year and month}
+
+  \CommentTok{#Create time series object}
+\NormalTok{ts.room <-}\StringTok{ }\KeywordTok{ts}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ room[}\DecValTok{1}\OperatorTok{:}\DecValTok{46}\NormalTok{, }\StringTok{"occupy"}\NormalTok{], }\DataTypeTok{frequency=} \DecValTok{12}\NormalTok{, }\DataTypeTok{start =} \KeywordTok{c}\NormalTok{(}\DecValTok{2015}\NormalTok{,}\DecValTok{03}\NormalTok{))}
+
+\NormalTok{additive_seasonal_model <-}\StringTok{ }\KeywordTok{hw}\NormalTok{(}\DataTypeTok{y =}\NormalTok{ ts.room, }\DataTypeTok{seasonal =} \StringTok{"add"}\NormalTok{, }\DataTypeTok{h =} \DecValTok{12}\NormalTok{, }\DataTypeTok{initial =} \StringTok{"simple"}\NormalTok{)}
+\KeywordTok{summary}\NormalTok{(additive_seasonal_model)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Forecast method: Holt-Winters' additive method
+## 
+## Model Information:
+## Holt-Winters' additive method 
+## 
+## Call:
+##  hw(y = ts.room, h = 12, seasonal = "add", initial = "simple") 
+## 
+##   Smoothing parameters:
+##     alpha = 0.2868 
+##     beta  = 0 
+##     gamma = 0.859 
+## 
+##   Initial states:
+##     l = 6320180.0833 
+##     b = 18356.8819 
+##     s = -550520.1 37799.92 252113.9 380695.9 307059.9 -178346.1
+##            413728.9 -46585.08 -194199.1 -199677.1 -74295.08 -147776.1
+## 
+##   sigma:  140378.9
+## Error measures:
+##                    ME     RMSE      MAE       MPE     MAPE      MASE       ACF1
+## Training set 12383.61 140378.9 101949.7 0.1595426 1.500139 0.2848773 -0.0156958
+## 
+## Forecasts:
+##          Point Forecast   Lo 80   Hi 80   Lo 95   Hi 95
+## Jan 2019        7535315 7355412 7715218 7260178 7810453
+## Feb 2019        7324548 7137391 7511706 7038316 7610781
+## Mar 2019        7522249 7328108 7716390 7225336 7819162
+## Apr 2019        7427775 7226893 7628657 7120552 7734998
+## May 2019        7091744 6884340 7299148 6774547 7408942
+## Jun 2019        7296314 7082586 7510041 6969446 7623182
+## Jul 2019        7392052 7172183 7611921 7055792 7728313
+## Aug 2019        7643066 7417223 7868909 7297669 7988464
+## Sep 2019        7096146 6864482 7327809 6741847 7450445
+## Oct 2019        7679937 7442596 7917279 7316955 8042920
+## Nov 2019        7951794 7708907 8194680 7580331 8323257
+## Dec 2019        7896150 7647842 8144458 7516396 8275904
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{r2_ii <-}\StringTok{ }\DecValTok{1}\OperatorTok{-}\NormalTok{additive_seasonal_model}\OperatorTok{$}\NormalTok{model}\OperatorTok{$}\NormalTok{SSE}\OperatorTok{/}\KeywordTok{sum}\NormalTok{((additive_seasonal_model}\OperatorTok{$}\NormalTok{x}\OperatorTok{-}\KeywordTok{mean}\NormalTok{(additive_seasonal_model}\OperatorTok{$}\NormalTok{x))}\OperatorTok{^}\DecValTok{2}\NormalTok{)}
+
+\CommentTok{#i) cont.}
+
+\CommentTok{#Multiplicative seasonal model}
+\NormalTok{multiplicative_seasonal_model<-}\KeywordTok{hw}\NormalTok{(ts.room,}\DataTypeTok{seasonal=}\StringTok{"mul"}\NormalTok{,}\DataTypeTok{h=}\DecValTok{12}\NormalTok{,}\DataTypeTok{initial=}\StringTok{"simple"}\NormalTok{)}
+\KeywordTok{summary}\NormalTok{(multiplicative_seasonal_model)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Forecast method: Holt-Winters' multiplicative method
+## 
+## Model Information:
+## Holt-Winters' multiplicative method 
+## 
+## Call:
+##  hw(y = ts.room, h = 12, seasonal = "mul", initial = "simple") 
+## 
+##   Smoothing parameters:
+##     alpha = 0.2625 
+##     beta  = 0 
+##     gamma = 0.8909 
+## 
+##   Initial states:
+##     l = 6320180.0833 
+##     b = 18356.8819 
+##     s = 0.9129 1.006 1.0399 1.0602 1.0486 0.9718
+##            1.0655 0.9926 0.9693 0.9684 0.9882 0.9766
+## 
+##   sigma:  0.0223
+## Error measures:
+##                    ME     RMSE      MAE       MPE     MAPE      MASE       ACF1
+## Training set 11137.41 145540.6 106589.3 0.1449077 1.567278 0.2978418 0.02318862
+## 
+## Forecasts:
+##          Point Forecast   Lo 80   Hi 80   Lo 95   Hi 95
+## Jan 2019        7560398 7344230 7776565 7229798 7890997
+## Feb 2019        7336349 7119513 7553185 7004728 7667971
+## Mar 2019        7539390 7309547 7769233 7187875 7890905
+## Apr 2019        7435570 7202219 7668921 7078690 7792450
+## May 2019        7087026 6858460 7315592 6737464 7436588
+## Jun 2019        7286464 7045335 7527594 6917688 7655240
+## Jul 2019        7375308 7125215 7625401 6992824 7757793
+## Aug 2019        7633472 7368566 7898378 7228334 8038611
+## Sep 2019        7068613 6817850 7319375 6685105 7452120
+## Oct 2019        7664210 7386553 7941867 7239571 8088850
+## Nov 2019        7948654 7654862 8242446 7499338 8397970
+## Dec 2019        7903885 7606090 8201681 7448446 8359324
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{r2_iii <-}\StringTok{ }\DecValTok{1}\OperatorTok{-}\NormalTok{multiplicative_seasonal_model}\OperatorTok{$}\NormalTok{model}\OperatorTok{$}\NormalTok{SSE}\OperatorTok{/}\KeywordTok{sum}\NormalTok{((multiplicative_seasonal_model}\OperatorTok{$}\NormalTok{x}\OperatorTok{-}\KeywordTok{mean}\NormalTok{(multiplicative_seasonal_model}\OperatorTok{$}\NormalTok{x))}\OperatorTok{^}\DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{question-2b-ii}{%
+\paragraph{Question 2b) ii)}\label{question-2b-ii}}
+
+\textbf{Holt Linear Exponential Smoothing R-squared: 0.6907}
+
+\textbf{Additive seasonal model R-squared: 0.9111}
+
+\textbf{Multiplicative seasonal model R-squared: 0.9046}
+
+\textbf{The Holt Linear Exponential Smoothing model suggests a mild
+relationship between the predicted model and the dataset. It suggests
+69.07\% of the variation in the dataset is explained by this model. }
+
+\textbf{The additive seasonal model suggests a strong relationship
+between the predicted model and the dataset. It suggests 91.11\% of the
+variation in the dataset is explained by this model. }
+
+\textbf{The multiplicative seasonal model also suggests a strong
+relationship between the predicted model and the dataset. It suggests
+90.46\% of the variation in the dataset is explained by this model.}
+
+\textbf{It seems the first model is a poorer fit in comparison to the
+second and third model.}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\hypertarget{question-2c-i}{%
+\paragraph{Question 2c) i)}\label{question-2c-i}}
+
+\textbf{Forecasted values: }
+
+\textbf{2019: }
+
+\textbf{Jan, 7560398 }
+
+\textbf{Feb, 7336349 }
+
+\textbf{March, 7539390 }
+
+\textbf{April, 7435570 }
+
+\textbf{May, 7087026 }
+
+\textbf{June, 7286464 }
+
+\textbf{July, 7375308 }
+
+\textbf{Aug, 7633472 }
+
+\textbf{Sep, 7068613 }
+
+\textbf{Oct, 7664210 }
+
+\textbf{Nov, 7948654 }
+
+\textbf{Dec, 7903885}
+
+\emph{Code:}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Question 2c) i)}
+\KeywordTok{forecast}\NormalTok{(multiplicative_seasonal_model)}\OperatorTok{$}\NormalTok{mean}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##          Jan     Feb     Mar     Apr     May     Jun     Jul     Aug     Sep
+## 2019 7560398 7336349 7539390 7435570 7087026 7286464 7375308 7633472 7068613
+##          Oct     Nov     Dec
+## 2019 7664210 7948654 7903885
+\end{verbatim}
+
+\hypertarget{question-2c-ii}{%
+\paragraph{Question 2c) ii)}\label{question-2c-ii}}
+
+\textbf{In general, the occupancy is rising in an upwards trend. In both
+2018 and 2019, there seems to be a seasonal increase in the winter of
+beginning of the year, followed by a decrease during the spring,
+followed by an increase during the summer, followed by a decrease in the
+autumn. When winter approaches, the seasonal cycle repeats in a similar
+way. In both years, the biggest change in occupancy occurs in the
+beginning of the winter season.}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Question 2c)ii)}
+\KeywordTok{plot}\NormalTok{(multiplicative_seasonal_model, }\DataTypeTok{xlab =} \StringTok{"Year"}\NormalTok{, }\DataTypeTok{ylab =} \StringTok{"Occupancy"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT3613-AS1_files/figure-latex/unnamed-chunk-8-1.pdf}
+
+\hypertarget{question-2d-i}{%
+\paragraph{Question 2d) i)}\label{question-2d-i}}
+
+\textbf{alpha = 0.2868}
+
+\textbf{beta = 0}
+
+\textbf{gamma = 0.859}
+
+\textbf{In terms of smoothing, beta is 0, which means the trend effects
+have no weight. On the other hand, gamma is close to 1. This is means
+the seasonal effects have more weight}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\hypertarget{question-2d-ii}{%
+\paragraph{Question 2d) ii)}\label{question-2d-ii}}
+
+\textbf{December 2018 Level, Trend, Seasonality States:}
+
+\textbf{level = 7327993.27}
+
+\textbf{trend = 18356.88}
+
+\textbf{seasonal = }
+
+\textbf{Jan: 347873.98, }
+
+\textbf{Feb: 421874.92, }
+
+\textbf{March: 168375.15, }
+
+\textbf{April: -397059.47, }
+
+\textbf{May: 168217.86, }
+
+\textbf{June: -64439.12, }
+
+\textbf{July: -141820.99, }
+
+\textbf{Aug: -328033.54, }
+
+\textbf{Sep: 26354.17, }
+
+\textbf{Oct: 139185.16, }
+
+\textbf{Nov: -40158.90, }
+
+\textbf{Dec: 188965.11}
+
+\textbf{There is a general upwards growth as seen by the trend state.
+The monthly variations begin with occupancy increasing in the winter
+months (Jan, Feb), followed by a decline throughout the spring (March,
+April), followed by a brief increase in May, followed by continual
+decline in the summer (June, Juuly, Aug), followed by an increase during
+the autumn (Sep, Oct), a sudden decline in Nov and final increase in
+Dec.}
+
+\emph{Code:}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{additive_seasonal_model}\OperatorTok{$}\NormalTok{model}\OperatorTok{$}\NormalTok{states[}\DecValTok{47}\NormalTok{,]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##          l          b         s1         s2         s3         s4         s5 
+## 7327993.27   18356.88  347873.98  421874.92  168375.15 -397059.47  168217.86 
+##         s6         s7         s8         s9        s10        s11        s12 
+##  -64439.12 -141820.99 -328033.54   26354.17  139185.16  -40158.90  188965.11
+\end{verbatim}
+
+\hypertarget{question-3a}{%
+\paragraph{Question 3a)}\label{question-3a}}
+
+\textbf{See reported data below under n\_salespeople and n\_volume}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Question 3a)}
+\NormalTok{salesA <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\StringTok{"salespeople"}\NormalTok{ =}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{4}\NormalTok{, }\DecValTok{6}\NormalTok{, }\DecValTok{8}\NormalTok{), }\StringTok{"volume"}\NormalTok{ =}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{400}\NormalTok{, }\DecValTok{480}\NormalTok{, }\DecValTok{500}\NormalTok{, }\DecValTok{600}\NormalTok{, }\DecValTok{750}\NormalTok{, }\DecValTok{800}\NormalTok{))}
+\NormalTok{salesB <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\StringTok{"salespeople"}\NormalTok{ =}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{4}\NormalTok{, }\DecValTok{6}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{11}\NormalTok{), }\StringTok{"volume"}\NormalTok{ =}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{50}\NormalTok{, }\DecValTok{200}\NormalTok{, }\DecValTok{450}\NormalTok{, }\DecValTok{550}\NormalTok{, }\DecValTok{750}\NormalTok{, }\DecValTok{850}\NormalTok{, }\DecValTok{900}\NormalTok{))}
+
+\CommentTok{#City A normalization}
+\NormalTok{salesA}\OperatorTok{$}\NormalTok{n_salespeople <-}\StringTok{ }\NormalTok{salesA}\OperatorTok{$}\NormalTok{salespeople}\OperatorTok{/}\DecValTok{3} \CommentTok{#Data is normalized with 3 as reference level}
+\NormalTok{salesA}\OperatorTok{$}\NormalTok{n_volume <-}\StringTok{ }\NormalTok{salesA}\OperatorTok{$}\NormalTok{volume}\OperatorTok{/}\DecValTok{500} \CommentTok{#Data is normalized with 500 as reference level}
+
+\CommentTok{#City B normalization}
+\NormalTok{salesB}\OperatorTok{$}\NormalTok{n_salespeople <-}\StringTok{ }\NormalTok{salesB}\OperatorTok{$}\NormalTok{salespeople}\OperatorTok{/}\DecValTok{4} \CommentTok{#Data is normalized with 4 as reference level}
+\NormalTok{salesB}\OperatorTok{$}\NormalTok{n_volume <-}\StringTok{ }\NormalTok{salesB}\OperatorTok{$}\NormalTok{volume}\OperatorTok{/}\DecValTok{550} \CommentTok{#Data is normalized with 550 as reference level}
+
+\NormalTok{salesA}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   salespeople volume n_salespeople n_volume
+## 1           1    400     0.3333333     0.80
+## 2           2    480     0.6666667     0.96
+## 3           3    500     1.0000000     1.00
+## 4           4    600     1.3333333     1.20
+## 5           6    750     2.0000000     1.50
+## 6           8    800     2.6666667     1.60
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{salesB}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   salespeople volume n_salespeople   n_volume
+## 1           0     50          0.00 0.09090909
+## 2           2    200          0.50 0.36363636
+## 3           3    450          0.75 0.81818182
+## 4           4    550          1.00 1.00000000
+## 5           6    750          1.50 1.36363636
+## 6          10    850          2.50 1.54545455
+## 7          11    900          2.75 1.63636364
+\end{verbatim}
+
+\hypertarget{question-3b}{%
+\paragraph{Question 3b)}\label{question-3b}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Question 3b)}
+\KeywordTok{library}\NormalTok{(}\StringTok{'ggplot2'}\NormalTok{)}
+
+\KeywordTok{ggplot}\NormalTok{(salesA, }\KeywordTok{aes}\NormalTok{(n_salespeople, n_volume))}\OperatorTok{+}\KeywordTok{geom_point}\NormalTok{()}\OperatorTok{+}\KeywordTok{ggtitle}\NormalTok{(}\StringTok{"CityA"}\NormalTok{, }\StringTok{"Normalized Ref: (3, 500)"}\NormalTok{)}\OperatorTok{+}\KeywordTok{xlab}\NormalTok{(}\StringTok{"Salespeople"}\NormalTok{)}\OperatorTok{+}\KeywordTok{ylab}\NormalTok{(}\StringTok{"Volume"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT3613-AS1_files/figure-latex/unnamed-chunk-11-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggplot}\NormalTok{(salesB, }\KeywordTok{aes}\NormalTok{(n_salespeople, n_volume))}\OperatorTok{+}\KeywordTok{geom_point}\NormalTok{()}\OperatorTok{+}\KeywordTok{ggtitle}\NormalTok{(}\StringTok{"CityB"}\NormalTok{, }\StringTok{"Normalized Ref: (4, 550)"}\NormalTok{)}\OperatorTok{+}\KeywordTok{xlab}\NormalTok{(}\StringTok{"Salespeople"}\NormalTok{)}\OperatorTok{+}\KeywordTok{ylab}\NormalTok{(}\StringTok{"Volume"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT3613-AS1_files/figure-latex/unnamed-chunk-11-2.pdf}
+
+\hypertarget{question-3c}{%
+\paragraph{Question 3c)}\label{question-3c}}
+
+\textbf{City A: a = 0.903426}
+
+\textbf{City A: b = -3.044814}
+
+\textbf{City A: c = 2.302461}
+
+\textbf{City A: d = 0.742147}
+
+\textbf{City B: a = 1.718743}
+
+\textbf{City B: b = -2.057240}
+
+\textbf{City B: c = 2.725133}
+
+\textbf{City B: d = -0.124765}
+
+\textbf{R-Squared for City A: 0.990220}
+
+\textbf{R-Squared for City B: 0.990367}
+
+\textbf{There is a strong association between the models and the data
+based on the R-squared value in both City A and City B. City A's model
+describes 99.02\% of the variation in the data. City B's model describes
+99.03\% of the variation in the data}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Question 3c)}
+
+\CommentTok{#CITY A}
+\NormalTok{A_A <-}\StringTok{ }\NormalTok{(}\KeywordTok{max}\NormalTok{(salesA}\OperatorTok{$}\NormalTok{n_volume) }\OperatorTok{-}\StringTok{ }\KeywordTok{min}\NormalTok{(salesA}\OperatorTok{$}\NormalTok{n_volume))}
+\CommentTok{#Select the nearest x-value to the point of inflection}
+\NormalTok{inflection <-}\StringTok{ }\FloatTok{1.33333}
+\NormalTok{A_C <-}\StringTok{ }\DecValTok{4}\OperatorTok{*}\NormalTok{(inflection)}\OperatorTok{/}\NormalTok{A_A}
+\NormalTok{A_B <-}\StringTok{ }\OperatorTok{-}\NormalTok{(inflection)}\OperatorTok{*}\NormalTok{A_C}
+\NormalTok{A_D <-}\StringTok{ }\KeywordTok{min}\NormalTok{(salesA}\OperatorTok{$}\NormalTok{n_volume)}
+
+\NormalTok{logitA <-}\StringTok{ }\KeywordTok{nls}\NormalTok{(n_volume }\OperatorTok{~}\StringTok{ }\NormalTok{(a}\OperatorTok{/}\NormalTok{(}\DecValTok{1}\OperatorTok{+}\KeywordTok{exp}\NormalTok{(}\OperatorTok{-}\NormalTok{b}\OperatorTok{-}\NormalTok{c}\OperatorTok{*}\NormalTok{n_salespeople)) }\OperatorTok{+}\StringTok{ }\NormalTok{d), }\DataTypeTok{data=}\NormalTok{salesA, }\DataTypeTok{start=}\KeywordTok{c}\NormalTok{(}\DataTypeTok{a=}\NormalTok{A_A, }\DataTypeTok{b=}\NormalTok{A_B, }\DataTypeTok{c=}\NormalTok{A_C, }\DataTypeTok{d=}\NormalTok{A_D))}
+
+\CommentTok{#CITY B}
+\NormalTok{B_A <-}\StringTok{ }\NormalTok{(}\KeywordTok{max}\NormalTok{(salesB}\OperatorTok{$}\NormalTok{n_volume) }\OperatorTok{-}\StringTok{ }\KeywordTok{min}\NormalTok{(salesB}\OperatorTok{$}\NormalTok{n_volume))}
+\CommentTok{#Select the nearest x-value to the point of inflection}
+\NormalTok{inflection <-}\StringTok{ }\FloatTok{0.75}
+\NormalTok{B_C <-}\StringTok{ }\DecValTok{4}\OperatorTok{*}\NormalTok{(inflection)}\OperatorTok{/}\NormalTok{B_A}
+\NormalTok{B_B <-}\StringTok{ }\OperatorTok{-}\NormalTok{(inflection)}\OperatorTok{*}\NormalTok{B_C}
+\NormalTok{B_D <-}\StringTok{ }\KeywordTok{min}\NormalTok{(salesB}\OperatorTok{$}\NormalTok{n_volume)}
+
+\NormalTok{logitB <-}\StringTok{ }\KeywordTok{nls}\NormalTok{(n_volume }\OperatorTok{~}\StringTok{ }\NormalTok{(a}\OperatorTok{/}\NormalTok{(}\DecValTok{1}\OperatorTok{+}\KeywordTok{exp}\NormalTok{(}\OperatorTok{-}\NormalTok{b}\OperatorTok{-}\NormalTok{c}\OperatorTok{*}\NormalTok{n_salespeople)) }\OperatorTok{+}\StringTok{ }\NormalTok{d), }\DataTypeTok{data=}\NormalTok{salesB, }\DataTypeTok{start=}\KeywordTok{c}\NormalTok{(}\DataTypeTok{a=}\NormalTok{A_A, }\DataTypeTok{b=}\NormalTok{A_B, }\DataTypeTok{c=}\NormalTok{A_C, }\DataTypeTok{d=}\NormalTok{A_D))}
+
+\CommentTok{#City A R-squared}
+\NormalTok{sseA =}\StringTok{ }\KeywordTok{sum}\NormalTok{((}\KeywordTok{fitted}\NormalTok{(logitA) }\OperatorTok{-}\StringTok{ }\KeywordTok{mean}\NormalTok{(salesA}\OperatorTok{$}\NormalTok{n_volume))}\OperatorTok{^}\DecValTok{2}\NormalTok{)}
+\NormalTok{ssrA =}\StringTok{ }\KeywordTok{sum}\NormalTok{((}\KeywordTok{fitted}\NormalTok{(logitA) }\OperatorTok{-}\StringTok{ }\NormalTok{salesA}\OperatorTok{$}\NormalTok{n_volume)}\OperatorTok{^}\DecValTok{2}\NormalTok{)}
+
+\NormalTok{r_squaredA =}\StringTok{ }\DecValTok{1} \OperatorTok{-}\StringTok{ }\NormalTok{(ssrA}\OperatorTok{/}\NormalTok{(sseA }\OperatorTok{+}\StringTok{ }\NormalTok{ssrA))}
+
+
+\CommentTok{#City B R-squared}
+\NormalTok{sseB =}\StringTok{ }\KeywordTok{sum}\NormalTok{((}\KeywordTok{fitted}\NormalTok{(logitB) }\OperatorTok{-}\StringTok{ }\KeywordTok{mean}\NormalTok{(salesB}\OperatorTok{$}\NormalTok{n_volume))}\OperatorTok{^}\DecValTok{2}\NormalTok{)}
+\NormalTok{ssrB =}\StringTok{ }\KeywordTok{sum}\NormalTok{((}\KeywordTok{fitted}\NormalTok{(logitB) }\OperatorTok{-}\StringTok{ }\NormalTok{salesB}\OperatorTok{$}\NormalTok{n_volume)}\OperatorTok{^}\DecValTok{2}\NormalTok{)}
+
+\NormalTok{r_squaredB =}\StringTok{ }\DecValTok{1} \OperatorTok{-}\StringTok{ }\NormalTok{(ssrB}\OperatorTok{/}\NormalTok{(sseB }\OperatorTok{+}\StringTok{ }\NormalTok{ssrB))}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{question-3d}{%
+\paragraph{Question 3d)}\label{question-3d}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Question 3d)}
+\NormalTok{n_volume_head_A <-}\StringTok{ }\KeywordTok{predict}\NormalTok{(logitA)}
+\NormalTok{plot1 <-}\StringTok{ }\KeywordTok{ggplot}\NormalTok{(salesA, }\KeywordTok{aes}\NormalTok{(n_salespeople, n_volume_head_A))}\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_point}\NormalTok{()}\OperatorTok{+}
+\StringTok{  }\KeywordTok{ggtitle}\NormalTok{(}\StringTok{"CityA"}\NormalTok{, }\StringTok{"Normalized Ref: (3, 500)"}\NormalTok{)}\OperatorTok{+}
+\StringTok{  }\KeywordTok{xlab}\NormalTok{(}\StringTok{"Salespeople"}\NormalTok{)}\OperatorTok{+}
+\StringTok{  }\KeywordTok{ylab}\NormalTok{(}\StringTok{"Volume"}\NormalTok{)}
+
+\NormalTok{n_volume_head_B <-}\StringTok{ }\KeywordTok{predict}\NormalTok{(logitB)}
+\NormalTok{plot2 <-}\StringTok{ }\KeywordTok{ggplot}\NormalTok{(salesB, }\KeywordTok{aes}\NormalTok{(n_salespeople, n_volume_head_B))}\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_point}\NormalTok{()}\OperatorTok{+}
+\StringTok{  }\KeywordTok{ggtitle}\NormalTok{(}\StringTok{"CityB"}\NormalTok{, }\StringTok{"Normalized Ref: (4, 550)"}\NormalTok{)}\OperatorTok{+}
+\StringTok{  }\KeywordTok{xlab}\NormalTok{(}\StringTok{"Salespeople"}\NormalTok{)}\OperatorTok{+}
+\StringTok{  }\KeywordTok{ylab}\NormalTok{(}\StringTok{"Volume"}\NormalTok{)}
+
+\NormalTok{plot1}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT3613-AS1_files/figure-latex/unnamed-chunk-13-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{plot2}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT3613-AS1_files/figure-latex/unnamed-chunk-13-2.pdf}
+
+\hypertarget{question-3e}{%
+\paragraph{Question 3e)}\label{question-3e}}
+
+\textbf{Sales Volume of City A with 7 salespeople: 799.491596}
+
+\textbf{Sales Volume of City B with 5 salespeople: 666.451221}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Question 3e)}
+
+\CommentTok{#City A with 7 salespeople}
+\NormalTok{(A_A}\OperatorTok{/}\NormalTok{(}\DecValTok{1}\OperatorTok{+}\KeywordTok{exp}\NormalTok{(}\OperatorTok{-}\NormalTok{A_B}\OperatorTok{-}\NormalTok{A_C}\OperatorTok{*}\DecValTok{7}\OperatorTok{/}\DecValTok{3}\NormalTok{)) }\OperatorTok{+}\StringTok{ }\NormalTok{A_D)}\OperatorTok{*}\DecValTok{500}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 799.4916
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#City B with 5 salespeople}
+\NormalTok{(B_A}\OperatorTok{/}\NormalTok{(}\DecValTok{1}\OperatorTok{+}\KeywordTok{exp}\NormalTok{(}\OperatorTok{-}\NormalTok{B_B}\OperatorTok{-}\NormalTok{B_C}\OperatorTok{*}\DecValTok{5}\OperatorTok{/}\DecValTok{4}\NormalTok{)) }\OperatorTok{+}\StringTok{ }\NormalTok{B_D)}\OperatorTok{*}\DecValTok{550}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 666.4512
+\end{verbatim}
+
+\hypertarget{question-3f}{%
+\paragraph{Question 3f)}\label{question-3f}}
+
+\textbf{Optimal allocation is 6 salespeople in City A and 11 salespeople
+in City B}
+
+\textbf{City A Maximum Total Net Profit: 15000}
+
+\textbf{City A Optimal Total Sales Volume: 750}
+
+\textbf{City A Optimal Total Cost: 9000}
+
+\textbf{City A Optimal Gross Profit: 24000}
+
+\textbf{City B Maximum Total Net Profit: 34000}
+
+\textbf{City B Optimal Total Sales Volume: 900}
+
+\textbf{City B Optimal Total Cost: 11000}
+
+\textbf{City B Optimal Gross Profit: 45000}
+
+\emph{Code:}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Question 3f)}
+\NormalTok{salesA}\OperatorTok{$}\NormalTok{net_profit <-}\DecValTok{32}\OperatorTok{*}\NormalTok{salesA}\OperatorTok{$}\NormalTok{volume }\OperatorTok{-}\StringTok{ }\NormalTok{salesA}\OperatorTok{$}\NormalTok{salespeople}\OperatorTok{*}\DecValTok{1500}
+\NormalTok{salesA}\OperatorTok{$}\NormalTok{total_cost <-salesA}\OperatorTok{$}\NormalTok{salespeople}\OperatorTok{*}\DecValTok{1500}
+\NormalTok{salesA}\OperatorTok{$}\NormalTok{gross_profit <-}\DecValTok{32}\OperatorTok{*}\NormalTok{salesA}\OperatorTok{$}\NormalTok{volume}
+
+\CommentTok{#City A Maximum Total Net Profit:}
+\KeywordTok{max}\NormalTok{(salesA}\OperatorTok{$}\NormalTok{net_profit)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 15000
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#City A Optimal Total Sales Volume:}
+\DecValTok{750}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 750
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#City A Optimal Total Cost:}
+\DecValTok{6}\OperatorTok{*}\DecValTok{1500}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 9000
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#City A Optimal Gross Profit:}
+\DecValTok{32}\OperatorTok{*}\DecValTok{750}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 24000
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{salesB}\OperatorTok{$}\NormalTok{net_profit <-}\DecValTok{50}\OperatorTok{*}\NormalTok{salesB}\OperatorTok{$}\NormalTok{volume }\OperatorTok{-}\StringTok{ }\NormalTok{salesB}\OperatorTok{$}\NormalTok{salespeople}\OperatorTok{*}\DecValTok{1000}
+\NormalTok{salesB}\OperatorTok{$}\NormalTok{total_cost <-}\StringTok{ }\NormalTok{salesB}\OperatorTok{$}\NormalTok{salespeople}\OperatorTok{*}\DecValTok{1000}
+\NormalTok{salesB}\OperatorTok{$}\NormalTok{gross_profit <-}\DecValTok{50}\OperatorTok{*}\NormalTok{salesB}\OperatorTok{$}\NormalTok{volume}
+\CommentTok{#City B Maximum Total Net Profit:}
+\KeywordTok{max}\NormalTok{(salesB}\OperatorTok{$}\NormalTok{net_profit)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 34000
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#City B Optimal Total Sales Volume:}
+\DecValTok{900}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 900
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#City B Optimal Total Cost:}
+\DecValTok{11}\OperatorTok{*}\DecValTok{1000}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 11000
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#City B Optimal Gross Profit:}
+\DecValTok{50}\OperatorTok{*}\DecValTok{900}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 45000
+\end{verbatim}
+
+\hypertarget{question-3g}{%
+\paragraph{Question 3g)}\label{question-3g}}
+
+\textbf{Optimal allocation is 6 salespeople in City A and 6 salespeople
+in City B}
+
+\textbf{Maximum Total Net Profit: 46500}
+
+\textbf{Optimal Total Sales Volume: 1500}
+
+\textbf{Optimal Total Cost: 15000}
+
+\textbf{Optimal Gross Profit: 61500}
+
+\end{document}
